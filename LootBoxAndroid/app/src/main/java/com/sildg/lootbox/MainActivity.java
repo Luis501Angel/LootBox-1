@@ -11,6 +11,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,8 +26,6 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import static android.widget.Toast.LENGTH_SHORT;
@@ -37,6 +36,8 @@ public class MainActivity extends Activity {
     private static final String TAG = "MainActivity";
     boolean boolean_permission;
 
+    TextView latIn, lonIn, ciudadIn, estadoIn, ubicacionIn;
+
     Double lat, lon;
     Geocoder geocoder;
     Intent intent;
@@ -46,14 +47,26 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initWidgets();
         askPermission();
         startLocationTracking();
         start();
 
+        HttpUrl url = new HttpUrl();
+
+        url.access("mnm", 10, 10);
         geocoder = new Geocoder(this, Locale.getDefault());
     }
 
-    public void start() {
+    private void initWidgets() {
+        latIn = (TextView) findViewById(R.id.latIn);
+        lonIn = (TextView) findViewById(R.id.lonIn);
+        ciudadIn = (TextView) findViewById(R.id.ciudadIn);
+        estadoIn = (TextView) findViewById(R.id.estadoIn);
+        ubicacionIn = (TextView) findViewById(R.id.ubicacionIn);
+    }
+
+    private void start() {
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
@@ -144,42 +157,63 @@ public class MainActivity extends Activity {
             lat = Double.valueOf(intent.getStringExtra("latutide"));
             lon = Double.valueOf(intent.getStringExtra("lon"));
 
-            List<Address> addresses = new ArrayList<>();
-            checkInsideLocation(new LatLng(19.309959, -99.177147), 10, lat, lon);
-            checkOusideLocation(new LatLng(19.309959, -99.177147), 25, lat, lon);
+            Address address = null;
 
             try {
-                addresses = geocoder.getFromLocation(lat, lon, 1);
+                address = geocoder.getFromLocation(lat, lon, 1).get(0);
 
                 //for(Address address: addresses) Toast.makeText(getApplicationContext(), address.toString(), Toast.LENGTH_LONG).show();
 
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
+
+            latIn.setText(lat.toString());
+            lonIn.setText(lon.toString());
+            ciudadIn.setText(address.getLocality());
+            estadoIn.setText(address.getAdminArea());
+            if(checkInsideLocation(new LatLng(19.309959, -99.177147), 10, lat, lon))
+            {
+                ubicacionIn.setText("Adentro del establecimiento");
+            }
+            else if(checkOutsideLocation(new LatLng(19.309959, -99.177147), 25, lat, lon))
+            {
+                ubicacionIn.setText("Alrededor del establecimiento");
+            }
+            else
+            {
+                ubicacionIn.setText("No se encuentra el establecimiento");
+            }
         }
     };
 
-    private void checkInsideLocation(LatLng inside, double radious, double lat, double lon) {
+    private boolean checkInsideLocation(LatLng inside, double radious, double lat, double lon) {
         float[] distance = new float[2];
 
         Location.distanceBetween(lat, lon, inside.latitude, inside.longitude, distance);
 
         if(distance[0] > radious ){
-            Toast.makeText(getBaseContext(), "outside location", Toast.LENGTH_LONG).show();
+            //return "Afuera del establecimiento";
+            return false;
         } else {
-            Toast.makeText(getBaseContext(), "Inside location", Toast.LENGTH_LONG).show();
+            //return "Adentro del establecimiento";
+            return true;
         }
     }
 
-    private void checkOusideLocation(LatLng outside, double radious, double lat, double lon) {
+    private boolean checkOutsideLocation(LatLng outside, double radious, double lat, double lon) {
         float[] distance = new float[2];
 
         Location.distanceBetween(lat, lon, outside.latitude, outside.longitude, distance);
 
-        if(distance[0] > radious ){
-            Toast.makeText(getBaseContext(), "No location", Toast.LENGTH_LONG).show();
+        if (distance[0] > radious) {
+            //return "No se encuentra en el area";
+            return false;
         } else {
-            Toast.makeText(getBaseContext(), "Around location", Toast.LENGTH_LONG).show();
+            //return "Alrededor del establecimiento";
+            return true;
         }
     }
+
+
 }

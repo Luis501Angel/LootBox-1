@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "672240335196",
+    "firebase_url": "https://sildg-notifications.firebaseio.com",
+    "project_id": "sildg-notifications",
+    "storage_bucket": "sildg-notifications.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:672240335196:android:bb89df58f5b1e2a9d22999",
+        "android_client_info": {
+          "package_name": "com.sildg.lootbox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "672240335196-jdnubprdj1kro8m4opfqobp0ul0fejsr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEhzAfSM12sDKf9VsUaqqCxcsc32pnT_s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "672240335196-jdnubprdj1kro8m4opfqobp0ul0fejsr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:672240335196:android:53bab51a82f1ed64d22999",
+        "android_client_info": {
+          "package_name": "com.sildg.not"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "672240335196-jdnubprdj1kro8m4opfqobp0ul0fejsr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEhzAfSM12sDKf9VsUaqqCxcsc32pnT_s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "672240335196-jdnubprdj1kro8m4opfqobp0ul0fejsr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
